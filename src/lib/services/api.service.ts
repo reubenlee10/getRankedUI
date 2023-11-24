@@ -1,6 +1,7 @@
 import { HTTPService } from './http.service';
 
-const PUBLIC_API_URL = 'http://localhost:5000';
+// const PUBLIC_API_URL = 'http://localhost:5000';
+const PUBLIC_API_URL = 'https://wuburn10.pythonanywhere.com';
 
 export abstract class APIService {
 	private static httpService = new HTTPService(PUBLIC_API_URL, 'api');
