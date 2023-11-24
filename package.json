@@ -45,9 +45,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@floating-ui/dom": "^1.5.3"
+		"@floating-ui/dom": "^1.5.3",
+		"cross-env": "^7.0.3"
 	},
 	"engines": {
-		"node": "18.18.2"
+		"node": "18.17.1"
 	}
 }
