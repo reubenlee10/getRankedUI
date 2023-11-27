@@ -13,7 +13,6 @@
 		dateOfBirth = '';
 
 	async function registerUser() {
-		console.log('Register User');
 		if (
 			email == '' ||
 			password == '' ||
@@ -42,7 +41,6 @@
 				gender,
 				dateOfBirth
 			);
-			console.log(response);
 			if (response == '-1') {
 				toastStore.trigger({
 					message: 'There was an error creating a new user. Try Again',
@@ -53,6 +51,7 @@
 					message: 'Account Successfully Created!',
 					background: 'variant-filled-success'
 				});
+				// TODO : GOTO LOGIN
 			}
 		}
 	}

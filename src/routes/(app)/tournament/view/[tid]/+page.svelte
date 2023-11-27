@@ -19,7 +19,6 @@
 
 		if (playersReponse.length > 0){
 			for (let i = 0; i < playersReponse.length; i++) {
-				console.log(playersReponse[i].players)
 				for (let j = 0; j < playersReponse[i].players.length; j++) {
 					if (playersReponse[i].players[j].user_id == uid) {
 						joined = true;

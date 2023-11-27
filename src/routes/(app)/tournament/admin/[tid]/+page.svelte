@@ -1,11 +1,22 @@
 <script lang="ts">
 	import { APIService } from '$lib/services/api.service';
-	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
+	import {flip} from "svelte/animate";
+    import {dndzone} from "svelte-dnd-action";
+	import type { TournamentPlayers } from '$lib/models/tournament.model';
+
 	let response: any;
 	let tid: any;
 	let joined: any;
-	let playersReponse: any;
+	let playersResponse: TournamentPlayers[] ;
+
+    const flipDurationMs = 300;
+    function handleDndConsider(e:any) {
+		playersResponse[Number(e.srcElement.id)].players = e.detail.items;
+    }
+    function handleDndFinalize(e:any) {
+		playersResponse[Number(e.srcElement.id)].players = e.detail.items;
+    }
 
 	onMount(async function () {
 		let uid = localStorage.getItem('auth-id');
@@ -13,26 +24,39 @@
 
 		response = await APIService.getTournament(tid);
 
-		playersReponse = await APIService.getTournamentPlayers(tid);
+		playersResponse = await APIService.getTournamentPlayers(tid);
 
-		if (playersReponse.length > 0){
-			for (let i = 0; i < playersReponse.length; i++) {
-				for (let j = 0; j < playersReponse[i].players.length; j++) {
-					if (playersReponse[i].players[j].user_id == uid) {
+		if (playersResponse.length > 0){
+			for (let i = 0; i < playersResponse.length; i++) {
+				for (let j = 0; j < playersResponse[i].players.length; j++) {
+					if (playersResponse[i].players[j].id == uid) {
 						joined = true;
 						break;
 					}
 				}
 			}
-			if (joined == undefined ){
+			if (joined == undefined){
 				joined = false;
 			}
 		}else{
 			joined = false;
 		}
-
-		
 	});
+
+	async function saveOrder(i:number){
+		console.log("Save")
+		let order: any[] = []
+		for (let j = 0; j < playersResponse[i].players.length; j++){
+			order.push({
+				id: playersResponse[i].players[j].id,
+				seed: j + 1
+			})
+		}
+		console.log(order)
+		let response = await APIService.tournamentOrder(playersResponse[i].category.tournament_id, playersResponse[i].category.category_id, order)
+		console.log(response)
+	}
+
 </script>
 
 <div class="container h-full mx-auto flex flex-col gap-2 m-4">
@@ -44,8 +68,7 @@
 				</p>
 			</div>
 			<div class="space-y-10 flex flex-coltext-xl flex-col">
-				<div class="table-container">
-					<!-- Native Table Element -->
+				<!-- <div class="table-container">
 					<table class="table table-hover">
 						<tbody>
 							<tr>
@@ -93,20 +116,34 @@
 							</tr>
 						</tbody>
 					</table>
-				</div>
+				</div> -->
 				<div>
 					<span class="text-2xl font-bold underline">Players</span>
-					<div class="flex flex-col">
-						{#if playersReponse != undefined}
-							{#if playersReponse.length <= 0}
+					<div class="flex flex-col m-4">
+						{#if playersResponse != undefined}
+							{#if playersResponse.length <= 0}
 								<span class="italic my-3">No registered players yet.</span>
 							{:else}
-								{#each playersReponse as c}
-									<span class="font-bold text-xl">{c.category.category_name} ({c.category.type})</span>
-									{#each c.players as p, i}
-										<span class="text-lg">{i + 1}. {p.first_name} {p.last_name}</span>
-									{/each}
-								{/each}
+								{#each playersResponse as c, i}
+									<div>
+										<span class="font-bold text-xl">{c.category.category_name} ({c.category.type})</span>
+										<div class="flex flex-col">
+											<section class="border-white" id="{String(i)}" use:dndzone="{{items:c.players, flipDurationMs, dropFromOthersDisabled:true}}" on:consider="{handleDndConsider}" on:finalize="{handleDndFinalize}">
+												{#each c.players as p(p.id)}
+													<div class="p-3 m-1 border border-white" animate:flip="{{duration: flipDurationMs}}">{p.first_name} {p.last_name}</div>
+												{/each}
+											</section>
+											<button type="button" class="btn variant-filled w-24 p-1.5 m-2 self-end" on:click={() => {saveOrder(i)}}>
+												<span>
+													<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+														<path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+													</svg>
+												</span>
+												<span>Save</span>
+											</button>
+										</div>
+									</div>
+								{/each} 
 							{/if}
 						{/if}
 					</div>
