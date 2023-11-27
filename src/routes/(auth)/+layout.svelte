@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.postcss';
+	import '../../app.postcss';
 	import { AppShell, AppBar, Toast } from '@skeletonlabs/skeleton';
 
 	// Floating UI for Popups
@@ -24,11 +24,5 @@
 		</AppBar>
 	</svelte:fragment>
 	<!-- Page Route Content -->
-	<div class="container h-full mx-auto flex justify-center items-center">
-		<div class="space-y-10 text-center flex flex-col items-center">
-			<a href="/register" class="btn variant-filled w-48">Register</a>
-			<a href="/login" class="btn variant-filled w-48">Login</a>
-			<a href="/tournament" class="btn variant-filled w-48">Tournament</a>
-		</div>
-	</div>
+	<slot />
 </AppShell>
