@@ -23,13 +23,15 @@
 					background: 'variant-filled-error'
 				});
 			} else {
+				localStorage.setItem('auth-id', response);
+
 				toastStore.trigger({
 					message: 'Login Successful',
-					background: 'variant-filled-success'
+					background: 'variant-filled-success',
 				});
 				// TODO : JWT?
-				localStorage.setItem('auth-id', response);
-				goto('/tournament');
+				setTimeout(() => {goto("/tournament")}, 2000);
+				
 			}
 		}
 	}

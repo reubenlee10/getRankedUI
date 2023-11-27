@@ -27,6 +27,9 @@
 					}
 				}
 			}
+			if (joined == undefined ){
+				joined = false;
+			}
 		}else{
 			joined = false;
 		}
@@ -43,6 +46,7 @@
 					message: 'Successfully joined tournament!',
 					background: 'variant-filled-success'
 				});	
+				playersReponse = await APIService.getTournamentPlayers(tid);
 			} else if (joinResponse.code == 1) {
 				toastStore.trigger({
 					message: 'Failed to join tournament',
@@ -120,7 +124,11 @@
 				<div class="flex justify-end">
 					<div class="ml-2">
 						{#if joined != undefined}
-							{#if joined != true}
+							{#if joined}
+								<button class="ml-auto mt-0 btn variant-filled-tertiary justify-center">
+									Joined  ✓</button
+								>
+							{:else}
 								<select class="select w-48" bind:value={category}>
 									<option value="" selected disabled>Category</option>
 									{#each response.categories as c}
@@ -130,10 +138,6 @@
 								<button on:click={join} class="ml-auto mt-0 btn variant-filled-tertiary justify-center">
 									Join Tournament
 								</button>
-							{:else}
-								<button class="ml-auto mt-0 btn variant-filled-tertiary justify-center">
-									Joined  ✓</button
-								>
 							{/if}
 						{/if}
 					</div>
