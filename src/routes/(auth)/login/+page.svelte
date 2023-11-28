@@ -16,7 +16,6 @@
 			});
 		} else {
 			let response = await APIService.login(email, password);
-			console.log(response);
 			if (response == '-1') {
 				toastStore.trigger({
 					message: 'Email or Password is incorrect',

@@ -1,7 +1,5 @@
 import { HTTPService } from './http.service';
-
-const PUBLIC_API_URL = 'http://localhost:5000';
-// const PUBLIC_API_URL = 'https://wuburn10.pythonanywhere.com';
+import { PUBLIC_API_URL } from '$env/static/public';
 
 export abstract class APIService {
 	private static httpService = new HTTPService(PUBLIC_API_URL, 'api');
@@ -81,6 +79,26 @@ export abstract class APIService {
 				})
 				.withAuthID()
 				.post('/tournament/join');
+			return response;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	public static async tournamentOrder(
+		tournamentID: any,
+		categoryID: any,
+		order: any
+	): Promise<any> {
+		try {
+			const response: any = await this.httpService.request
+				.withJSON({
+					tournamentID: tournamentID,
+					categoryID: categoryID,
+					order: order
+				})
+				.withAuthID()
+				.post('/tournament/order');
 			return response;
 		} catch (e) {
 			throw e;

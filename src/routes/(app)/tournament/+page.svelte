@@ -18,13 +18,11 @@
 	}
 
 	function selectionHandler(e: any) {
-		console.log(e);
 		goto('/tournament/view/' + e.detail[0]);
 	}
 
 	onMount(async function () {
 		tournaments = await APIService.getTournaments();
-		console.log(tournaments);
 		for (let i = 0; i < tournaments.length; i++) {
 			// Tournament ID, take last 5 digits
 			// tournaments[i].tournament_id = tournaments[i].tournament_id.substr(

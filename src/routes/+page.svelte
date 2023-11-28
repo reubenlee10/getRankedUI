@@ -6,10 +6,21 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { initializeStores } from '@skeletonlabs/skeleton';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
 
+	onMount(async function () {
+		if (
+			localStorage.getItem('auth-id') != undefined &&
+			localStorage.getItem('auth-id') != '' &&
+			localStorage.getItem('auth-id') != null
+		) {
+			goto('/tournament');
+		}
+	});
 </script>
 
 <!-- App Shell -->
