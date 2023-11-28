@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { APIService } from '$lib/services/api.service';
-	import { Stepper, Step } from '@skeletonlabs/skeleton';
+	import { Stepper, Step, getToastStore } from '@skeletonlabs/skeleton';
 
-	// TODO : User ID
-	let user_id = 'b78dbf2d8f0246e799df39d6967a6c75';
+	const toastStore = getToastStore();
 
 	let tournamentName: string,
 		sport: string,
@@ -19,7 +19,6 @@
 
 	async function onCompleteHandler(e: Event): Promise<string> {
 		let tournament_id: string = await APIService.createTournament(
-			user_id,
 			tournamentName,
 			sport,
 			type,
@@ -32,6 +31,20 @@
 			address,
 			noOfCourts
 		);
+
+		if (tournament_id != ""){
+			toastStore.trigger({
+					message: 'Tournament Successful Created',
+					background: 'variant-filled-success',
+				});
+
+				setTimeout(() => {goto("/tournament/admin")}, 2000);
+		}else{
+			toastStore.trigger({
+					message: 'Failed to Create Tournament. Please Try Again',
+					background: 'variant-filled-error',
+				});
+		}
 		// TODO : Toast Msg of success, then direct to tournaments page
 		return tournament_id;
 	}
@@ -101,7 +114,7 @@
 							bind:value={categories}
 							class="input"
 							type="text"
-							placeholder="Categories"
+							placeholder="Categories eg. 'U18B,U18G,U21B,U21G'"
 						/>
 					</label>
 				</Step>

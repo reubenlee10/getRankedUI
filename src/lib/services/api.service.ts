@@ -5,7 +5,6 @@ export abstract class APIService {
 	private static httpService = new HTTPService(PUBLIC_API_URL, 'api');
 
 	public static async createTournament(
-		user_id: string,
 		tournamentName: string,
 		sport: string,
 		type: string,
@@ -21,7 +20,6 @@ export abstract class APIService {
 		try {
 			const res: any = await this.httpService.request
 				.withJSON({
-					uid: user_id,
 					name: tournamentName,
 					sport: sport,
 					type: type,
@@ -34,6 +32,7 @@ export abstract class APIService {
 					address: address,
 					courts: noOfCourts
 				})
+				.withAuthID()
 				.post('/tournament/create');
 			return res.id;
 		} catch (e) {
@@ -44,6 +43,15 @@ export abstract class APIService {
 	public static async getTournaments(): Promise<any> {
 		try {
 			const response: any = await this.httpService.request.get('/tournaments');
+			return response.tournaments;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	public static async getMyTournaments(): Promise<any> {
+		try {
+			const response: any = await this.httpService.request.withAuthID().get('/tournaments/self');
 			return response.tournaments;
 		} catch (e) {
 			throw e;
