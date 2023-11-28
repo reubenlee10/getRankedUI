@@ -45,7 +45,6 @@
 					background: 'variant-filled-error',
 				});
 		}
-		// TODO : Toast Msg of success, then direct to tournaments page
 		return tournament_id;
 	}
 </script>
