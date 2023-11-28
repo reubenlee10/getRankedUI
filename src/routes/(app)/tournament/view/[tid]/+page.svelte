@@ -20,7 +20,7 @@
 		if (playersReponse.length > 0){
 			for (let i = 0; i < playersReponse.length; i++) {
 				for (let j = 0; j < playersReponse[i].players.length; j++) {
-					if (playersReponse[i].players[j].user_id == uid) {
+					if (playersReponse[i].players[j].id == uid) {
 						joined = true;
 						break;
 					}
