@@ -39,12 +39,12 @@
 	async function join() {
 		if (category != undefined && category != ""){
 			let joinResponse = await APIService.joinTournament(tid, category);
-			joined = true;
 			if (joinResponse.code == 0) {
 				toastStore.trigger({
 					message: 'Successfully joined tournament!',
 					background: 'variant-filled-success'
 				});	
+				joined = true;
 				playersReponse = await APIService.getTournamentPlayers(tid);
 			} else if (joinResponse.code == 1) {
 				toastStore.trigger({
