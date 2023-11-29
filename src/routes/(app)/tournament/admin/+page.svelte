@@ -18,7 +18,7 @@
 	}
 
 	function selectionHandler(e: any) {
-		goto('/tournament/view/' + e.detail[0]);
+		goto('/tournament/admin/' + e.detail[0]);
 	}
 
 	onMount(async function () {
