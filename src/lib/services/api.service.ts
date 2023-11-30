@@ -78,6 +78,17 @@ export abstract class APIService {
 		}
 	}
 
+	public static async getTournamentPlayersAdmin(tournamentID: string): Promise<any> {
+		try {
+			const response: any = await this.httpService.request.get(
+				'/tournament/players/admin/' + tournamentID
+			);
+			return response.tournament;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	public static async joinTournament(tournamentID: string, categoryID: string): Promise<any> {
 		try {
 			const response: any = await this.httpService.request

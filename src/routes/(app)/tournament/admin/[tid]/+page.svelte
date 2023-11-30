@@ -24,7 +24,7 @@
 
 		response = await APIService.getTournament(tid);
 
-		playersResponse = await APIService.getTournamentPlayers(tid);
+		playersResponse = await APIService.getTournamentPlayersAdmin(tid);
 
 		if (playersResponse.length > 0) {
 			for (let i = 0; i < playersResponse.length; i++) {

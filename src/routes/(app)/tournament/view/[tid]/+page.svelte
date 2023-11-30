@@ -115,7 +115,7 @@
 							</tr>
 							<tr>
 								<td class="font-bold">Regulations</td>
-								<td>{response.tournament.regulations}</td>
+								<td ><div class="whitespace-pre-wrap">{response.tournament.regulations}</div></td>
 							</tr>
 						</tbody>
 					</table>
