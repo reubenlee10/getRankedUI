@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { APIService } from '$lib/services/api.service';
 	import { Stepper, Step, getToastStore } from '@skeletonlabs/skeleton';
 
@@ -51,7 +52,9 @@
 					message: 'Account Successfully Created!',
 					background: 'variant-filled-success'
 				});
-				// TODO : GOTO LOGIN
+				
+				setTimeout(() => {goto("/login")}, 2000);
+
 			}
 		}
 	}
