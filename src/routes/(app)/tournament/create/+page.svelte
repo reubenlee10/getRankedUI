@@ -4,6 +4,7 @@
 	import { Stepper, Step, getToastStore } from '@skeletonlabs/skeleton';
 
 	const toastStore = getToastStore();
+	let createPressed = false
 
 	let tournamentName: string,
 		sport: string,
@@ -17,35 +18,39 @@
 		address: string,
 		noOfCourts: number;
 
-	async function onCompleteHandler(e: Event): Promise<string> {
-		let tournament_id: string = await APIService.createTournament(
-			tournamentName,
-			sport,
-			type,
-			startDate,
-			endDate,
-			lastRegisterDate,
-			regulations,
-			categories,
-			location,
-			address,
-			noOfCourts
-		);
+	async function onCompleteHandler(){
+		if (!createPressed){
+			createPressed = true
+			let tournament_id: string = await APIService.createTournament(
+				tournamentName,
+				sport,
+				type,
+				startDate,
+				endDate,
+				lastRegisterDate,
+				regulations,
+				categories,
+				location,
+				address,
+				noOfCourts
+			);
 
-		if (tournament_id != ""){
-			toastStore.trigger({
-					message: 'Tournament Successful Created',
-					background: 'variant-filled-success',
-				});
+			if (tournament_id != ""){
+				toastStore.trigger({
+						message: 'Tournament Successful Created',
+						background: 'variant-filled-success',
+					});
 
-				setTimeout(() => {goto("/tournament/admin")}, 2000);
-		}else{
-			toastStore.trigger({
-					message: 'Failed to Create Tournament. Please Try Again',
-					background: 'variant-filled-error',
-				});
+					setTimeout(() => {goto("/tournament/admin")}, 2000);
+			}else{
+				toastStore.trigger({
+						message: 'Failed to Create Tournament. Please Try Again',
+						background: 'variant-filled-error',
+					});
+				createPressed = false
+			}
+			return tournament_id;
 		}
-		return tournament_id;
 	}
 </script>
 

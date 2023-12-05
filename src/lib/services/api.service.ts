@@ -89,6 +89,28 @@ export abstract class APIService {
 		}
 	}
 
+	public static async getMatchesByCategory(tournamentID: string): Promise<any> {
+		try {
+			const response: any = await this.httpService.request.get(
+				'/tournament/matches/category/' + tournamentID
+			);
+			return response.matches;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	public static async getMatchesAll(tournamentID: string): Promise<any> {
+		try {
+			const response: any = await this.httpService.request.get(
+				'/tournament/matches/all/' + tournamentID
+			);
+			return response.matches;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	public static async joinTournament(tournamentID: string, categoryID: string): Promise<any> {
 		try {
 			const response: any = await this.httpService.request
@@ -118,6 +140,20 @@ export abstract class APIService {
 				})
 				.withAuthID()
 				.post('/tournament/order');
+			return response;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	public static async tournamentDraw(tournamentID: any): Promise<any> {
+		try {
+			const response: any = await this.httpService.request
+				.withJSON({
+					tournamentID: tournamentID
+				})
+				.withAuthID()
+				.post('/tournament/draw');
 			return response;
 		} catch (e) {
 			throw e;

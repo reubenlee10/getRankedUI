@@ -3,6 +3,8 @@
 	import { APIService } from '$lib/services/api.service';
 	import { Stepper, Step, getToastStore } from '@skeletonlabs/skeleton';
 
+	let registered = false
+
 	const toastStore = getToastStore();
 
 	let email = '',
@@ -14,47 +16,56 @@
 		dateOfBirth = '';
 
 	async function registerUser() {
-		if (
-			email == '' ||
-			password == '' ||
-			confirmationPassword == '' ||
-			firstName == '' ||
-			lastName == '' ||
-			gender == '' ||
-			dateOfBirth == ''
-		) {
-			toastStore.trigger({
-				message: 'Make sure that all fields are filled',
-				background: 'variant-filled-error'
-			});
-		} else if (password != confirmationPassword) {
-			toastStore.trigger({
-				message: 'Password does not match with Confirmation Password',
-				background: 'variant-filled-error'
-			});
-		} else {
-			let response = await APIService.registerUser(
-				email,
-				password,
-				confirmationPassword,
-				firstName,
-				lastName,
-				gender,
-				dateOfBirth
-			);
-			if (response == '-1') {
+		if (!registered){
+			registered = true
+			if (
+				email == '' ||
+				password == '' ||
+				confirmationPassword == '' ||
+				firstName == '' ||
+				lastName == '' ||
+				gender == '' ||
+				dateOfBirth == ''
+			) {
 				toastStore.trigger({
-					message: 'There was an error creating a new user. Try Again',
+					message: 'Make sure that all fields are filled',
 					background: 'variant-filled-error'
 				});
-			} else if (response == '0') {
+			} else if (password != confirmationPassword) {
 				toastStore.trigger({
-					message: 'Account Successfully Created!',
-					background: 'variant-filled-success'
+					message: 'Password does not match with Confirmation Password',
+					background: 'variant-filled-error'
 				});
-				
-				setTimeout(() => {goto("/login")}, 2000);
+			} else {
+				let response = await APIService.registerUser(
+					email,
+					password,
+					confirmationPassword,
+					firstName,
+					lastName,
+					gender,
+					dateOfBirth
+				);
+				if (response == '-1') {
+					toastStore.trigger({
+						message: 'There was an error creating a new user. Try Again',
+						background: 'variant-filled-error'
+					});
+					registered = false
+				} else if (response == '0') {
+					toastStore.trigger({
+						message: 'Account Successfully Created!',
+						background: 'variant-filled-success'
+					});
+					setTimeout(() => {goto("/login")}, 2000);
 
+				} else{
+					toastStore.trigger({
+						message: response,
+						background: 'variant-filled-error'
+					});
+					registered = false
+				}
 			}
 		}
 	}
