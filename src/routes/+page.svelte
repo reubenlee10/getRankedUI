@@ -8,17 +8,24 @@
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import bgImage from '$lib/images/Order.svg'
+
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 	initializeStores();
 
+	let checked = false
+
 	onMount(async function () {
+		// TODO : JWT Check
 		if (
 			localStorage.getItem('auth-id') != undefined &&
 			localStorage.getItem('auth-id') != '' &&
 			localStorage.getItem('auth-id') != null
 		) {
 			goto('/tournament');
+		}else{
+			checked = true
 		}
 	});
 </script>
@@ -35,11 +42,14 @@
 		</AppBar>
 	</svelte:fragment>
 	<!-- Page Route Content -->
-	<div class="container h-full mx-auto flex justify-center items-center">
-		<div class="space-y-10 text-center flex flex-col items-center">
-			<a href="/register" class="btn variant-filled w-48">Register</a>
-			<a href="/login" class="btn variant-filled w-48">Login</a>
-			<a href="/tournament" class="btn variant-filled w-48">Tournament</a>
+	{#if checked}
+		<div class="container h-full mx-auto flex flex-col items-center z-10">
+			<img src="{bgImage}" alt="getRanked" class="z-0 h-44 mb-12 mt-20">
+			<div class="space-y-10 text-center flex flex-col items-center">
+				<a href="/register" class="btn variant-filled w-48">Register</a>
+				<a href="/login" class="btn variant-filled w-48">Login</a>
+				<a href="/tournament" class="btn variant-filled w-48">Tournament</a>
+			</div>
 		</div>
-	</div>
+	{/if}
 </AppShell>

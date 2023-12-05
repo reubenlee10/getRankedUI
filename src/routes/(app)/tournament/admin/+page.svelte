@@ -52,7 +52,7 @@
 
 <div class="container h-full mx-auto flex flex-col gap-2 m-4">
 	<div class="flex m-2">
-		<div class="space-y-10 text-center flex flex-col items-center text-6xl">Tournaments</div>
+		<div class="space-y-10 text-center flex flex-col items-center text-6xl">My Tournaments</div>
 		<a href="/tournament/create" class="btn variant-filled ml-auto">
 			<span>Create</span>
 			<span

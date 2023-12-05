@@ -60,6 +60,14 @@
 		);
 		console.log(response);
 	}
+
+	async function tournamentDraw(){
+		console.log('Draw');
+		let response = await APIService.tournamentDraw(
+			tid
+		);
+		console.log(response);
+	}
 </script>
 
 <div class="container h-full mx-auto flex flex-col gap-2 m-4">
@@ -71,55 +79,6 @@
 				</p>
 			</div>
 			<div class="space-y-10 flex flex-coltext-xl flex-col">
-				<!-- <div class="table-container">
-					<table class="table table-hover">
-						<tbody>
-							<tr>
-								<td class="font-bold">Sport</td>
-								<td class="capitalize">{response.tournament.sport}</td>
-							</tr>
-							<tr>
-								<td class="font-bold">Dates</td>
-								<td
-									>{new Date(response.tournament.start_date).toLocaleString()} - {new Date(
-										response.tournament.end_date
-									).toLocaleString()}</td
-								>
-							</tr>
-							<tr>
-								<td class="font-bold">Last Register Date</td>
-								<td>{new Date(response.tournament.last_register_date).toLocaleString()}</td>
-							</tr>
-							<tr>
-								<td class="font-bold">Tournament Type</td>
-								<td class="capitalize">{response.tournament.tournament_type}</td>
-							</tr>
-							<tr>
-								<td class="font-bold">Address</td>
-								<td
-									><p>{response.address.name}</p>
-									<p>{response.address.address}</p></td
-								>
-							</tr>
-							<tr>
-								<td class="font-bold">No. of Courts</td>
-								<td>{response.tournament.no_of_courts}</td>
-							</tr>
-							<tr>
-								<td class="font-bold">Categories</td>
-								<td
-									>{#each response.categories as c}
-										<p>{c.category_name} ({c.type})</p>
-									{/each}</td
-								>
-							</tr>
-							<tr>
-								<td class="font-bold">Regulations</td>
-								<td>{response.tournament.regulations}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div> -->
 				<div>
 					<span class="text-2xl font-bold underline">Players</span>
 					<div class="flex flex-col m-4">
@@ -185,7 +144,22 @@
 							{/if}
 						{/if}
 					</div>
-					<div />
+					<button
+						type="button"
+						class="btn variant-filled-success px-4 py-2 m-2 self-center"
+						on:click={() => {
+							tournamentDraw();
+						}}
+					>
+						<span>
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+								<path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
+							</svg>
+						</span>
+						<span>Start Draw</span>
+					</button>
+					<div/>
 				</div>
 			</div>
 		{/if}

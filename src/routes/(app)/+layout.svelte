@@ -46,7 +46,7 @@
 				<a href="/"><strong class="text-xl uppercase">GetRanked</strong></a>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a href="/tournament/admin">My Tournaments</a>
+				<a href="/tournament/admin">Admin</a>
 				<span> | &nbsp; {playerName}</span>
 				{#if loggedIn}
 					<button class="btn btn-sm variant-ghost-surface" on:click={logout}> Logout </button>
