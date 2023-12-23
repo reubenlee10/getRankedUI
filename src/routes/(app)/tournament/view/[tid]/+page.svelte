@@ -224,41 +224,134 @@
 					{#if radioValue == 0}
 						{#if matchesAll != undefined }
 							{#if matchesAll.length > 0}
-								<dl class="list-dl mt-2">
+								<dl class="mt-2">
 									{#each matchesAll as m}
-										<div class="p-2 px-4 m-1 w-full text-token card space-y-4">
-												<!-- <span class="badge bg-primary-500">💀</span> -->
-												<span class="flex-auto p-2 pl-6">
-													<dt class="text-2xl">
-														{m.participant1.first_name} VS {m.participant2.first_name} 
-													</dt>
-													<dd class="flex gap-2 pr-2">
-														<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-															<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-														</svg> 
-														<span class="opacity-50">
-															{new Date(m.start_dt).toLocaleDateString("en-US", {
-																month: "short",
-																day: "numeric",
-																hour: "numeric",
-																minute: "numeric",
-																hour12: true,
-															})}
-														</span>
-													</dd>
-													<dd class="flex gap-2 pr-2">
-														<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-															<path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-															<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-														</svg>
-														<span class="opacity-50">
-															{m.court}
-														</span>
-													</dd>
-												</span>
-											<!-- <span class="badge variant-filled">{m.category.category_name}</span> -->
+										<div class="p-2 px-4 m-1 mb-2 w-full text-token card space-y-4">
+											<span class="flex-auto p-2 pl-6">
+												<dt class="flex flex-row">
+													<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+														<path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+													</svg> 
+													<span class="opacity-50 mr-3 ml-1">
+														{new Date(m.start_dt).toLocaleDateString("en-US", {
+															month: "short",
+															day: "numeric",
+															hour: "numeric",
+															minute: "numeric",
+															hour12: true,
+														})}
+													</span>
+													<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+														<path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+														<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+													</svg>
+													<span class="opacity-50">
+														{m.court}
+													</span>
+												</dt>
+												<dd class="flex gap-2 pr-2 mx-auto justify-center mt-1">
+												<dd>
+													<div class=" p-4 flex flex-row overflow-x-auto	">
+														<table class="border-collapse">
+															<tr>
+																<td class="border border-solid p-4 px-6">
+																	{m.participant1.first_name} 
+																</td>
+																<td class="border border-solid p-4 px-6 {m.p1_winner == null ? "bg-orange-600":""} {m.p1_winner == "true"?"bg-green-600":""} {m.p1_winner == "false"?"bg-red-600":""}">
+																	{#if m.p1_score != null}
+																		{m.p1_score}
+																	{:else}
+																		-
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set1_p1 != null}
+																		{m.set1_p1}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set2_p1 != null}
+																		{m.set2_p1}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set3_p1 != null}
+																		{m.set3_p1}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set4_p1 != null}
+																		{m.set4_p1}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set5_p1 != null}
+																		{m.set5_p1}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+															</tr>
+															<tr>
+																<td class="border border-solid p-4 px-6">
+																	{m.participant2.first_name}
+																</td>
+																<td class="border border-solid p-4 px-6 {m.p1_winner == null ? "bg-orange-600":""} {m.p1_winner == "true"?"bg-red-600":""} {m.p1_winner == "false"?"bg-green-600":""}">
+																	{#if m.p2_score != null}
+																		{m.p2_score}
+																	{:else}
+																		-
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set1_p2 != null}
+																		{m.set1_p2}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set2_p2 != null}
+																		{m.set2_p2}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set3_p2 != null}
+																		{m.set3_p2}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set4_p2 != null}
+																		{m.set4_p2}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+																<td class="border border-solid p-4 px-6">
+																	{#if m.set5_p2 != null}
+																		{m.set5_p2}
+																	{:else}
+																		0
+																	{/if}
+																</td>
+															</tr>
+														</table>
+													</div>
+												</dd>
+											</span>
 										</div>
-										
 									{/each}
 								</dl>
 							{:else}
