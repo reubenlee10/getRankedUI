@@ -4,6 +4,7 @@
 	import { flip } from 'svelte/animate';
 	import { dndzone } from 'svelte-dnd-action';
 	import type { TournamentPlayers } from '$lib/models/tournament.model';
+	import { goto } from '$app/navigation';
 
 	let response: any;
 	let tid: any;
@@ -44,7 +45,7 @@
 	});
 
 	async function saveOrder(i: number) {
-		console.log('Save');
+		// console.log('Save');
 		let order: any[] = [];
 		for (let j = 0; j < playersResponse[i].players.length; j++) {
 			order.push({
@@ -58,7 +59,6 @@
 			playersResponse[i].category.category_id,
 			order
 		);
-		console.log(response);
 	}
 
 	async function tournamentDraw(){
@@ -66,7 +66,7 @@
 		let response = await APIService.tournamentDraw(
 			tid
 		);
-		console.log(response);
+		// console.log(response);
 	}
 </script>
 
@@ -78,6 +78,9 @@
 					{response.tournament.tournament_name}
 				</p>
 			</div>
+			<button class="btn m-2 ml-0 variant-filled-tertiary w-32 text-white" on:click={() => {goto(tid +'/match');}}>
+				Edit Matches
+			</button>
 			<div class="space-y-10 flex flex-coltext-xl flex-col">
 				<div>
 					<span class="text-2xl font-bold underline">Players</span>

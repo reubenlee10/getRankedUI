@@ -111,6 +111,39 @@ export abstract class APIService {
 		}
 	}
 
+	public static async getMatchesAllOrdered(tournamentID: string): Promise<any> {
+		try {
+			const response: any = await this.httpService.request.get(
+				'/tournament/matches/all/ordered/' + tournamentID
+			);
+			return response.matches;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	public static async editMatch(
+		matchID: string,
+		scores: any[],
+		p1_points: any[],
+		p2_points: any[]
+	): Promise<any> {
+		try {
+			const response: any = await this.httpService.request
+				.withJSON({
+					matchID: matchID,
+					scores: scores,
+					p1_points: p1_points,
+					p2_points: p2_points
+				})
+				.withAuthID()
+				.post('/match/edit/');
+			return response.code;
+		} catch (e) {
+			throw e;
+		}
+	}
+
 	public static async joinTournament(tournamentID: string, categoryID: string): Promise<any> {
 		try {
 			const response: any = await this.httpService.request
