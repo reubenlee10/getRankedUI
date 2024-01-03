@@ -111,17 +111,6 @@ export abstract class APIService {
 		}
 	}
 
-	public static async getMatchesAllOrdered(tournamentID: string): Promise<any> {
-		try {
-			const response: any = await this.httpService.request.get(
-				'/tournament/matches/all/ordered/' + tournamentID
-			);
-			return response.matches;
-		} catch (e) {
-			throw e;
-		}
-	}
-
 	public static async editMatch(
 		matchID: string,
 		scores: any[],
@@ -139,6 +128,26 @@ export abstract class APIService {
 				.withAuthID()
 				.post('/match/edit/');
 			return response.code;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	public static async getDraw(tournamentID: string): Promise<any> {
+		try {
+			const response: any = await this.httpService.request.get('/tournament/draw/' + tournamentID);
+			return response.matches;
+		} catch (e) {
+			throw e;
+		}
+	}
+
+	public static async getMatchesAllOrdered(tournamentID: string): Promise<any> {
+		try {
+			const response: any = await this.httpService.request.get(
+				'/tournament/matches/all/ordered/' + tournamentID
+			);
+			return response.matches;
 		} catch (e) {
 			throw e;
 		}
@@ -187,7 +196,7 @@ export abstract class APIService {
 				})
 				.withAuthID()
 				.post('/tournament/draw');
-			return response;
+			return response.code;
 		} catch (e) {
 			throw e;
 		}
