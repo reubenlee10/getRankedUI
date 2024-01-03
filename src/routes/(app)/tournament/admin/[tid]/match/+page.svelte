@@ -1,14 +1,18 @@
 <script lang="ts">
 	import { APIService } from '$lib/services/api.service';
-	import { RadioGroup, RadioItem, getToastStore } from '@skeletonlabs/skeleton';
+	import { Accordion, AccordionItem, RadioGroup, RadioItem, getToastStore } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
+
 	let response: any;
 	let tid: any;
 	let playersReponse: any;
 	let matchesCategory: any[];
+    let drawResponse: any[];
 	let matchesAll: any[];
 	let radioValue: number = 0;
     let matchEditing:any[] = [];
+    let brackets = ["0", "3-4", "5-8" , "7-8", "9-16", "11-12", "13-16", "15-16", "17-32", "19-20", "21-24", "23-24", "25-32", "27-28", "29-32", "31-32"]
+    let rounds = ["Final", "Semi-Final", "Round1", "Round2", "Round3", "Round4"]
 
 	const toastStore = getToastStore();
 
@@ -51,6 +55,71 @@
 		matchesCategory = matchesResponse
 	}
 
+    async function getDraw(){
+		let drawResponseOld = await APIService.getDraw(tid);
+        // for (let i = 0; i < drawResponseOld.length; i++){
+        //     console.log("i",i)
+        //     console.log(drawResponseOld[i])
+        //     for (let j = 0; j < drawResponseOld[i].matches.length; j++){
+        //         console.log("j",j)
+        //         console.log(drawResponseOld[i].matches[j])
+        //         try{
+        //             if (drawResponseOld[i].brackets_old == undefined){
+        //                 drawResponseOld[i].brackets_old = []
+        //             }
+        //             // if (drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)] == undefined){
+        //             //     console.log("IN")
+        //             //     drawResponseOld[i].brackets_old.push([])
+        //             // }
+        //             drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push(drawResponseOld[i].matches[j])
+        //         }catch(e){
+        //             console.log(e)
+        //             drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)].push([])
+        //             console.log(drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)])
+        //             drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push(drawResponseOld[i].matches[j])
+        //             // drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round][drawResponseOld[i].matches[j]]
+        //             // try{
+        //             //     drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push([drawResponseOld[i].matches[j]])
+        //             // }catch(e){
+        //             //     drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push([drawResponseOld[i].matches[j]])
+        //             // }
+        //             // drawResponseOld[i].brackets_old[drawResponseOld[i].matches[j].round].push()
+        //         }
+        //     }
+            // drawResponseOld[i].brackets = []
+            // for (let k = 0; k < drawResponseOld[i].brackets_old.length; k++){
+            //     // console.log(drawResponseOld[i].brackets_old[k])
+            //     for (let m = 0; m < drawResponseOld[i].brackets_old[k].length; m++){
+            //         // console.log(drawResponseOld[i].brackets_old[k][m])
+            //         // try{
+            //         // console.log(drawResponseOld[i].brackets_old[k][m])
+            //         if (drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]] != undefined){
+            //             drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]] = [[drawResponseOld[i].brackets_old[k][m]]]
+            //         }else{
+            //             try{
+            //                 drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]][m].push(drawResponseOld[i].brackets_old[k][m])
+            //             }catch{
+            //                 drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]].push(drawResponseOld[i].brackets_old[k][m])
+            //             }
+            //         }
+            //         // }catch(e){
+            //         //     // if (drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]])
+            //         //     drawResponseOld[i].brackets.push([drawResponseOld[i].brackets_old[k]])
+            //         //     drawResponseOld[i].brackets[drawResponseOld[i].matches[j].round].push()
+            //         // }
+            //     }
+            // }
+        //     drawResponseOld[i].brackets = drawResponseOld[i].brackets_old
+
+        // }
+        for (let i = 0; i < drawResponseOld.length; i++){
+            console.log(Object.keys(drawResponseOld[i].matches).length)
+        }
+
+        console.log(drawResponseOld)
+        drawResponse = drawResponseOld
+	}
+
     function editMatch(index:number){
         matchEditing[index].editing ? matchEditing[index].editing = false: matchEditing[index].editing = true
     } 
@@ -80,42 +149,53 @@
 <div class="mx-6">
     <RadioGroup>
         <!-- TODO : Can optimize my only calling when jumping from one radio to another -->
-        <RadioItem bind:group={radioValue} name="justify" value={0} on:click={getAndOrderMatch}>All</RadioItem>
-        <RadioItem bind:group={radioValue} name="justify" value={1} on:click={getMatchesByCategory}>By Category</RadioItem>
+        <RadioItem bind:group={radioValue} name="justify" value={0} on:click={getAndOrderMatch}>Results</RadioItem>
+        <RadioItem bind:group={radioValue} name="justify" value={1} on:click={getMatchesByCategory}>Matches</RadioItem>
+        <RadioItem bind:group={radioValue} name="justify" value={2} on:click={getDraw}>Draw</RadioItem>
         <!-- <RadioItem bind:group={radioValue} name="justify" value={2}>(label)</RadioItem> -->
     </RadioGroup>
-    <!-- ALL  -->
+    <!-- RESULTS  -->
     {#if radioValue == 0}
         {#if matchesAll != undefined }
             {#if matchesAll.length > 0}
                 <dl class="mt-2">
+                    <Accordion class="card p-4 text-token m-1">
                     {#each matchesAll as m, index}
-                        <div class="p-2 px-4 m-1 mb-2 w-full text-token card space-y-4">
-                            <span class="flex-auto p-2 pl-6">
-                                <dt class="flex flex-row">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg> 
-                                    <span class="opacity-50 mr-3 ml-1">
-                                        {new Date(m.start_dt).toLocaleDateString("en-US", {
-                                            month: "short",
-                                            day: "numeric",
-                                            hour: "numeric",
-                                            minute: "numeric",
-                                            hour12: true,
-                                        })}
-                                    </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
-                                    <span class="opacity-50">
-                                        {m.court}
-                                    </span>
-                                </dt>
-                                <dd class="flex gap-2 pr-2 mx-auto justify-center mt-1">
-                                <dd>
-                                    <div class=" p-4 flex flex-col overflow-x-auto	">
+                                <AccordionItem >
+                                    <!-- <svelte:fragment slot="lead">(icon)</svelte:fragment> -->
+                                    <svelte:fragment slot="summary">
+                                        <div class="flex justify-between">
+                                            <p class="basis-3/5"> {m.participant1.first_name} ({m.p1_score == null?0:m.p1_score}) vs {m.participant2.first_name} ({m.p2_score == null?0:m.p2_score})</p>
+                                            <div class="flex basis-2/5 justify-end">
+                                                <div class="flex">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg> 
+                                                    <span class="opacity-50 mr-3 ml-1">
+                                                        {new Date(m.start_dt).toLocaleDateString("en-US", {
+                                                            month: "short",
+                                                            day: "numeric",
+                                                            hour: "numeric",
+                                                            minute: "numeric",
+                                                            hour12: true,
+                                                        })}
+                                                    </span>
+                                                </div>
+                                                <!-- Court -->
+                                                <div class="flex">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                                                    </svg>
+                                                    <span class="opacity-50">
+                                                        {m.court}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </svelte:fragment>
+                                    <svelte:fragment slot="content">
+                                        <div class=" p-4 flex flex-col overflow-x-auto	">
                                         <table class="border-collapse">
                                             {#if !matchEditing[index].editing}
                                                 <tr>
@@ -293,10 +373,10 @@
                                             {/if}
                                         </div>
                                     </div>
-                                </dd>
-                            </span>
-                        </div>
+                                    </svelte:fragment>
+                                </AccordionItem>
                     {/each}
+                    </Accordion>
                 </dl>
             {:else}
             <div class="pl-2 pt-6">
@@ -308,7 +388,9 @@
                 <span class="italic m-2">No Matches yet</span>
             </div>
         {/if}
+    <!-- MATCHES -->
     {:else if radioValue == 1}
+    <!-- MATCHES  -->
         {#if matchesCategory != undefined }
             {#if matchesCategory.length > 0}
                 {#each matchesCategory as c}
@@ -367,5 +449,43 @@
                 <span class="italic m-2">No Matches yet</span>
             </div>
         {/if}
+    {:else if radioValue == 2}
+    <!-- DRAW -->
+    <div class="flex flex-col">
+        {#if drawResponse != undefined}
+            {#each drawResponse as category}
+            <div class="">
+                <br>
+                <span class="text-4xl text-red-300">
+                    {category.category.category_name}
+                <br>
+                </span>
+                <div class="">
+                    {#each category.matches as bracket}
+                        <span class="text-2xl text-yellow-300">
+                            {brackets[bracket[0][0].bracket]=="0"?"": "" + brackets[bracket[0][0].bracket] + " placing"}
+                        </span>
+                        <div class="flex flex-row  overflow-auto">
+                        {#each bracket as round}
+                            <div class="flex flex-col justify-around">
+                                {#each round as match}
+                                    <div class="card m-2 variant-filled-surface p-4 w-44 rounded-md"> 
+                                        <div class="flex flex-col">
+                                            <span class="text-right ">{match.participant1.first_name} <span>({match.p1_score == null?0:match.p1_score})</span></span>
+                                            
+                                            <hr>
+                                            <span class="text-right">{match.participant2.first_name} <span>({match.p2_score == null?0:match.p2_score})</span></span>
+                                        </div>
+                                    </div>
+                                {/each}
+                            </div>
+                        {/each}
+                        </div>
+                    {/each}
+                </div>
+            </div>
+            {/each}
+        {/if}
+    </div>
     {/if}
     </div>
