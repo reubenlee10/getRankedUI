@@ -64,7 +64,7 @@
 	}
 
 	async function tournamentDraw() {
-		console.log('Draw');
+		drawOngoing = true;
 		let response = await APIService.tournamentDraw(tid);
 		if (response == 0) {
 			toastStore.trigger({
