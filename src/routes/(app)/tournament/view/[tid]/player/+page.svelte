@@ -148,8 +148,10 @@
 <div class="mx-6">
     <RadioGroup>
         <!-- TODO : Can optimize my only calling when jumping from one radio to another -->
-        <RadioItem bind:group={radioValue} name="justify" value={0} on:click={getAndOrderMatch}>Results</RadioItem>
+        <!-- <RadioItem bind:group={radioValue} name="justify" value={0} on:click={getAndOrderMatch}>Results</RadioItem>
         <RadioItem bind:group={radioValue} name="justify" value={1} on:click={getMatchesByCategory}>Matches</RadioItem>
+        <RadioItem bind:group={radioValue} name="justify" value={2} on:click={getDraw}>Draw</RadioItem> -->
+            <RadioItem bind:group={radioValue} name="justify" value={0} on:click={getAndOrderMatch}>Matches</RadioItem>
         <RadioItem bind:group={radioValue} name="justify" value={2} on:click={getDraw}>Draw</RadioItem>
         <!-- <RadioItem bind:group={radioValue} name="justify" value={2}>(label)</RadioItem> -->
     </RadioGroup>
