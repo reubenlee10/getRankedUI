@@ -49,14 +49,14 @@
 			<svelte:fragment slot="trail">
 				<a href="/tournament/admin">Admin</a>
 				<span> | &nbsp; {playerName}</span>
-				{#if loggedIn}
+				<!-- {#if loggedIn}
 					<button class="btn btn-sm variant-ghost-surface" on:click={logout}> Logout </button>
-				{/if}
+				{/if} -->
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
 	<!-- Page Route Content -->
-	{#if loggedIn}
+	<!-- {#if loggedIn} -->
 		<slot />
-	{/if}
+	<!-- {/if} -->
 </AppShell>
