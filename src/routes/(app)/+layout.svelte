@@ -21,19 +21,20 @@
 	let loggedIn: boolean;
 	let playerName = '';
 
-	onMount(async function () {
-		if (
-			localStorage.getItem('auth-id') == undefined ||
-			localStorage.getItem('auth-id') == '' ||
-			localStorage.getItem('auth-id') == null
-		) {
-			goto('/login');
-		} else {
-			loggedIn = true;
-			let playerData = await APIService.getPlayerData();
-			playerName = playerData.first_name;
-		}
-	});
+	// Check if user is logged in
+	// onMount(async function () {
+	// 	if (
+	// 		localStorage.getItem('auth-id') == undefined ||
+	// 		localStorage.getItem('auth-id') == '' ||
+	// 		localStorage.getItem('auth-id') == null
+	// 	) {
+	// 		goto('/login');
+	// 	} else {
+	// 		loggedIn = true;
+	// 		let playerData = await APIService.getPlayerData();
+	// 		playerName = playerData.first_name;
+	// 	}
+	// });
 </script>
 
 <!-- App Shell -->
