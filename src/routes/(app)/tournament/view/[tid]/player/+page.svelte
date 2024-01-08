@@ -12,6 +12,39 @@
 	let radioValue: number = 0;
     let matchEditing:any[] = [];
     let brackets = ["0", "3-4", "5-8" , "7-8", "9-16", "11-12", "13-16", "15-16", "17-32", "19-20", "21-24", "23-24", "25-32", "27-28", "29-32", "31-32"]
+    let categories = [
+        {   
+            id: "4834479a47f047b29142518fc5b66e51",
+            name : "Open",
+            colour : "red"
+        }, 
+        {
+            id: "c41292d5c88e4a7197b5c7a3b662d63d",
+            name : "Senior",
+            colour : "orange"
+        }, 
+        {   
+            id: "be1cdca58c84445eb8c2a0c366c7385b",
+            name : "Junior",
+            colour : "green"
+        }]
+
+    function getCategoryName(id:string){
+        for(let i = 0; i < categories.length; i++){
+            if (categories[i].id == id){
+                return categories[i].name
+            }
+        }
+    }
+
+    function getCategoryColour(id:string){
+        for(let i = 0; i < categories.length; i++){
+            if (categories[i].id == id){
+                console.log(id, " : ", categories[i].colour)
+                return categories[i].colour
+            }
+        }
+    }
 
 	const toastStore = getToastStore();
 
@@ -155,7 +188,7 @@
         <RadioItem bind:group={radioValue} name="justify" value={2} on:click={getDraw}>Draw</RadioItem>
         <!-- <RadioItem bind:group={radioValue} name="justify" value={2}>(label)</RadioItem> -->
     </RadioGroup>
-    <!-- RESULTS  -->
+    <!-- Matches  -->
     {#if radioValue == 0}
         {#if matchesAll != undefined }
             {#if matchesAll.length > 0}
@@ -166,7 +199,10 @@
                                     <!-- <svelte:fragment slot="lead">(icon)</svelte:fragment> -->
                                     <svelte:fragment slot="summary">
                                         <div class="flex justify-between">
-                                            <p class="basis-3/5"> {m.participant1.first_name} ({m.p1_score == null?0:m.p1_score}) vs {m.participant2.first_name} ({m.p2_score == null?0:m.p2_score})</p>
+                                            <p class="basis-3/5"> 
+                                                <span class="mr-1 badge bg-{getCategoryColour(m.category_id)}-600">{getCategoryName(m.category_id)}</span>
+                                                {m.participant1.first_name} ({m.p1_score == null?0:m.p1_score}) vs {m.participant2.first_name} ({m.p2_score == null?0:m.p2_score})
+                                            </p>
                                             <div class="flex basis-2/5 justify-end">
                                                 <div class="flex">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
