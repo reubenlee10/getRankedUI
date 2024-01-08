@@ -82,7 +82,6 @@
     function getCategoryColour(id:string){
         for(let i = 0; i < categories.length; i++){
             if (categories[i].id == id){
-                console.log(id, " : ", categories[i].colour)
                 return categories[i].colour
             }
         }
@@ -146,10 +145,8 @@
 
         // }
         for (let i = 0; i < drawResponseOld.length; i++){
-            console.log(Object.keys(drawResponseOld[i].matches).length)
         }
 
-        console.log(drawResponseOld)
         drawResponse = drawResponseOld
 	}
 

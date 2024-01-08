@@ -166,10 +166,8 @@
 
         // }
         for (let i = 0; i < drawResponseOld.length; i++){
-            console.log(Object.keys(drawResponseOld[i].matches).length)
         }
 
-        console.log(drawResponseOld)
         drawResponse = drawResponseOld
 	}
 
