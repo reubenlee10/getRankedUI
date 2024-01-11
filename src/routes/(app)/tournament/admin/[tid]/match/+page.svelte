@@ -542,9 +542,8 @@
                                 {#each round as match}
                                     <div class="card m-2 variant-filled-surface p-4 w-44 rounded-md"> 
                                         <div class="flex flex-col">
-                                            <span class="text-red-300 font-extrabold text-sm"><span class="text-yellow-300">{getCourt(match.court)}</span> {getStartDt(match.start_dt)} </span>
+                                            <span class="text-red-300 font-extrabold text-xs"><span class="text-yellow-300">{getCourt(match.court)}</span> {getStartDt(match.start_dt)} </span>
                                             <span class="text-right ">{match.participant1.first_name} <span>({match.p1_score == null?0:match.p1_score})</span></span>
-                                            
                                             <hr>
                                             <span class="text-right">{match.participant2.first_name} <span>({match.p2_score == null?0:match.p2_score})</span></span>
                                         </div>
