@@ -87,6 +87,39 @@
         }
     }
 
+    function getStartDt(start_dt:string){
+        let date = new Date(start_dt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+        })
+        if (date == "Jan 1, 7:30 AM" ){
+            return ""
+        }
+        return date
+    }
+
+    function getCourt(court:string){
+        if (court == null){
+            return "-"
+        }
+
+        if (court.trim() == "Court No.1"){
+            return "C1"
+        } else if(court.trim() == "Court No.2"){
+            return "C2"
+        } else if(court.trim() == "Court No.3"){
+            return "C3"
+        }else if(court.trim() == "Court No.4"){
+            return "C4"
+        }else if(court.trim() == "Court No.5"){
+            return "C5"
+        }
+        return court
+    }
+
     async function getDraw(){
 		let drawResponseOld = await APIService.getDraw(tid);
         // for (let i = 0; i < drawResponseOld.length; i++){
@@ -509,7 +542,7 @@
                                 {#each round as match}
                                     <div class="card m-2 variant-filled-surface p-4 w-44 rounded-md"> 
                                         <div class="flex flex-col">
-                                            <span class="text-red-300 font-extrabold">{match.match}</span>
+                                            <span class="text-red-300 font-extrabold text-sm"><span class="text-yellow-300">{getCourt(match.court)}</span> {getStartDt(match.start_dt)} </span>
                                             <span class="text-right ">{match.participant1.first_name} <span>({match.p1_score == null?0:match.p1_score})</span></span>
                                             
                                             <hr>

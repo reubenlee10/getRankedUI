@@ -45,6 +45,39 @@
         }
     }
 
+    function getStartDt(start_dt:string){
+        let date = new Date(start_dt).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+        })
+        if (date == "Jan 1, 7:30 AM" ){
+            return ""
+        }
+        return date
+    }
+
+    function getCourt(court:string){
+        if (court == null){
+            return "-"
+        }
+
+        if (court.trim() == "Court No.1"){
+            return "C1"
+        } else if(court.trim() == "Court No.2"){
+            return "C2"
+        } else if(court.trim() == "Court No.3"){
+            return "C3"
+        }else if(court.trim() == "Court No.4"){
+            return "C4"
+        }else if(court.trim() == "Court No.5"){
+            return "C5"
+        }
+        return court
+    }
+
 	const toastStore = getToastStore();
 
 	onMount(async function () {
@@ -88,61 +121,7 @@
 
     async function getDraw(){
 		let drawResponseOld = await APIService.getDraw(tid);
-        // for (let i = 0; i < drawResponseOld.length; i++){
-        //     console.log("i",i)
-        //     console.log(drawResponseOld[i])
-        //     for (let j = 0; j < drawResponseOld[i].matches.length; j++){
-        //         console.log("j",j)
-        //         console.log(drawResponseOld[i].matches[j])
-        //         try{
-        //             if (drawResponseOld[i].brackets_old == undefined){
-        //                 drawResponseOld[i].brackets_old = []
-        //             }
-        //             // if (drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)] == undefined){
-        //             //     console.log("IN")
-        //             //     drawResponseOld[i].brackets_old.push([])
-        //             // }
-        //             drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push(drawResponseOld[i].matches[j])
-        //         }catch(e){
-        //             console.log(e)
-        //             drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)].push([])
-        //             console.log(drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)])
-        //             drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push(drawResponseOld[i].matches[j])
-        //             // drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round][drawResponseOld[i].matches[j]]
-        //             // try{
-        //             //     drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push([drawResponseOld[i].matches[j]])
-        //             // }catch(e){
-        //             //     drawResponseOld[i].brackets_old[Number(drawResponseOld[i].matches[j].bracket)][drawResponseOld[i].matches[j].round].push([drawResponseOld[i].matches[j]])
-        //             // }
-        //             // drawResponseOld[i].brackets_old[drawResponseOld[i].matches[j].round].push()
-        //         }
-        //     }
-            // drawResponseOld[i].brackets = []
-            // for (let k = 0; k < drawResponseOld[i].brackets_old.length; k++){
-            //     // console.log(drawResponseOld[i].brackets_old[k])
-            //     for (let m = 0; m < drawResponseOld[i].brackets_old[k].length; m++){
-            //         // console.log(drawResponseOld[i].brackets_old[k][m])
-            //         // try{
-            //         // console.log(drawResponseOld[i].brackets_old[k][m])
-            //         if (drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]] != undefined){
-            //             drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]] = [[drawResponseOld[i].brackets_old[k][m]]]
-            //         }else{
-            //             try{
-            //                 drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]][m].push(drawResponseOld[i].brackets_old[k][m])
-            //             }catch{
-            //                 drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]].push(drawResponseOld[i].brackets_old[k][m])
-            //             }
-            //         }
-            //         // }catch(e){
-            //         //     // if (drawResponseOld[i].brackets[drawResponseOld[i].brackets_old[k]])
-            //         //     drawResponseOld[i].brackets.push([drawResponseOld[i].brackets_old[k]])
-            //         //     drawResponseOld[i].brackets[drawResponseOld[i].matches[j].round].push()
-            //         // }
-            //     }
-            // }
-        //     drawResponseOld[i].brackets = drawResponseOld[i].brackets_old
 
-        // }
         drawResponse = drawResponseOld
 	}
 
@@ -484,7 +463,7 @@
                                 {#each round as match}
                                     <div class="card m-2 variant-filled-surface p-4 w-44 rounded-md"> 
                                         <div class="flex flex-col">
-                                            <span class="text-red-300 font-extrabold">{match.match}</span>
+                                            <span class="text-red-300 font-extrabold text-sm"><span class="text-yellow-300">{getCourt(match.court)}</span> {getStartDt(match.start_dt)} </span>
                                             <span class="text-right ">{match.participant1.first_name} <span>({match.p1_score == null?0:match.p1_score})</span></span>
                                             
                                             <hr>
